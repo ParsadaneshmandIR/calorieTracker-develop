@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fa" dir="rtl" th:fragment="layout(content)">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title th:text="${pageTitle} + ' · پیگیر کالری'">پیگیر کالری</title>
+  <link rel="stylesheet" th:href="@{/css/app.css}"/>
+</head>
+<body>
+<div class="shell">
+  <header class="brand">
+    <h1>پیگیر کالری</h1>
+    <p>تخمین کالری مواد غذایی و وعده‌ها با تمرکز روی خوراک ایرانی</p>
+  </header>
+
+  <nav class="nav" aria-label="منوی اصلی">
+    <a th:href="@{/}" th:classappend="${#strings.equals(pageTitle,'جست‌وجو')} ? ' active'">جست‌وجو</a>
+    <a th:href="@{/calculator}" th:classappend="${#strings.equals(pageTitle,'ماشین‌حساب')} ? ' active'">ماشین‌حساب</a>
+    <a th:href="@{/meals}" th:classappend="${#strings.equals(pageTitle,'وعده‌های من')} ? ' active'">وعده‌های من</a>
+  </nav>
+
+  <main th:replace="${content}">محتوا</main>
+
+  <footer class="footer">
+    <p class="disclaimer">
+      این ابزار تخمین تقریبی کالری است و جایگزین توصیهٔ متخصص تغذیه نیست.
+      مقادیر بر اساس میانگین دستور پخت است و روغن، شکر و اندازهٔ پرس می‌تواند نتیجه را تغییر دهد.
+    </p>
+    <p class="attribution">
+      داده‌های مواد اولیه: USDA FoodData Central (public domain) —
+      داده‌های محصولات بسته‌بندی: Open Food Facts (ODbL 1.0)
+    </p>
+  </footer>
+</div>
+<script th:src="@{/js/app.js}"></script>
+</body>
+</html>

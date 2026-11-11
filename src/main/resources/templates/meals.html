@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title th:text="${pageTitle} + ' · پیگیر کالری'">وعده‌های من</title>
+  <link rel="stylesheet" th:href="@{/css/app.css}"/>
+</head>
+<body>
+<div class="shell">
+  <header class="brand">
+    <h1>پیگیر کالری</h1>
+    <p>تخمین کالری مواد غذایی و وعده‌ها با تمرکز روی خوراک ایرانی</p>
+  </header>
+
+  <nav class="nav">
+    <a th:href="@{/}">جست‌وجو</a>
+    <a th:href="@{/calculator}">ماشین‌حساب</a>
+    <a class="active" th:href="@{/meals}">وعده‌های من</a>
+  </nav>
+
+  <section class="stack">
+    <div class="panel">
+      <h2 th:text="'جمع امروز (' + ${today} + ')'">جمع امروز</h2>
+      <div class="macros">
+        <div class="macro"><span>کالری</span><strong th:text="${#pd.n1(dayKcal)}">۰</strong></div>
+        <div class="macro"><span>پروتئین</span><strong th:text="${#pd.n1(dayProtein)}">۰</strong></div>
+        <div class="macro"><span>کربوهیدرات</span><strong th:text="${#pd.n1(dayCarb)}">۰</strong></div>
+        <div class="macro"><span>چربی</span><strong th:text="${#pd.n1(dayFat)}">۰</strong></div>
+      </div>
+      <div class="bar" aria-hidden="true"><span style="width: 70%"></span></div>
+    </div>
+
+    <div class="panel stack">
+      <h2>ثبت سریع وعده</h2>
+      <form id="meal-form" class="stack">
+        <div class="row">
+          <label>
+            نام وعده
+            <input id="mealName" type="text" value="ناهار" required/>
+          </label>
+          <label>
+            تاریخ
+            <input id="eatenDate" type="date" th:value="${today}" required/>
+          </label>
+          <label>
+            ساعت
+            <input id="eatenTime" type="time" value="13:00" required/>
+          </label>
+        </div>
+        <div class="row">
+          <label>
+            غذا
+            <select id="mealFoodId" required>
+              <option th:each="f : ${foodOptions}" th:value="${f.id}" th:text="${f.nameFa}">غذا</option>
+            </select>
+          </label>
+          <label>
+            گرم
+            <input id="mealGrams" type="number" min="0.1" step="0.1" value="100" required/>
+          </label>
+          <button type="submit">ثبت</button>
+        </div>
+      </form>
+      <p id="meal-status" class="muted"></p>
+    </div>
+
+    <div class="panel">
+      <h2>وعده‌های امروز</h2>
+      <p class="empty" th:if="${#lists.isEmpty(meals)}">هنوز وعده‌ای ثبت نشده است.</p>
+      <div th:each="meal : ${meals}" class="stack" style="margin-bottom: 1rem;">
+        <strong th:text="${meal.name + ' — ' + meal.eatenTime}">ناهار</strong>
+        <table class="table">
+          <thead>
+          <tr>
+            <th>غذا</th>
+            <th>گرم</th>
+            <th>کالری</th>
+            <th>پروتئین</th>
+            <th>کربوهیدرات</th>
+            <th>چربی</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr th:each="e : ${meal.entries}">
+            <td th:text="${e.foodNameFa}">غذا</td>
+            <td th:text="${#pd.n(e.grams)}">۰</td>
+            <td th:text="${#pd.n1(e.computedKcal)}">۰</td>
+            <td th:text="${#pd.n1(e.computedProtein)}">۰</td>
+            <td th:text="${#pd.n1(e.computedCarb)}">۰</td>
+            <td th:text="${#pd.n1(e.computedFat)}">۰</td>
+          </tr>
+          </tbody>
+        </table>
+        <p class="muted" th:text="'جمع وعده: ' + ${#pd.n1(meal.totalKcal)} + ' کیلوکالری'"></p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p class="disclaimer">
+      این ابزار تخمین تقریبی کالری است و جایگزین توصیهٔ متخصص تغذیه نیست.
+      مقادیر بر اساس میانگین دستور پخت است و روغن، شکر و اندازهٔ پرس می‌تواند نتیجه را تغییر دهد.
+    </p>
+    <p class="attribution">
+      داده‌های مواد اولیه: USDA FoodData Central (public domain) —
+      داده‌های محصولات بسته‌بندی: Open Food Facts (ODbL 1.0)
+    </p>
+  </footer>
+</div>
+<script th:src="@{/js/app.js}"></script>
+</body>
+</html>

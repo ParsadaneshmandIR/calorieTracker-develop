@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title th:text="${pageTitle} + ' · پیگیر کالری'">ماشین‌حساب</title>
+  <link rel="stylesheet" th:href="@{/css/app.css}"/>
+</head>
+<body>
+<div class="shell">
+  <header class="brand">
+    <h1>پیگیر کالری</h1>
+    <p>تخمین کالری مواد غذایی و وعده‌ها با تمرکز روی خوراک ایرانی</p>
+  </header>
+
+  <nav class="nav">
+    <a th:href="@{/}">جست‌وجو</a>
+    <a class="active" th:href="@{/calculator}">ماشین‌حساب</a>
+    <a th:href="@{/meals}">وعده‌های من</a>
+  </nav>
+
+  <section class="panel stack">
+    <form id="calc-form" class="stack">
+      <label>
+        غذا
+        <select id="foodId" name="foodId" required>
+          <option value="" disabled th:selected="${food == null}">انتخاب کنید</option>
+          <option th:each="f : ${foodOptions}"
+                  th:value="${f.id}"
+                  th:selected="${food != null and food.id == f.id}"
+                  th:text="${f.nameFa + ' — ' + f.kcalPer100g + ' kcal/100g'}">غذا</option>
+        </select>
+      </label>
+
+      <div class="food-meta" th:if="${food != null}">
+        <span class="badge" th:text="${#pd.stateLabel(food.state.name())}">پخته</span>
+        <span class="badge warn"
+              th:if="${#pd.isPartialEdible(food.ediblePortionPct)}"
+              th:text="${#pd.pct(food.ediblePortionPct)} + ' خوراکی'">۸۷٪ خوراکی</span>
+      </div>
+
+      <label>
+        روش ورود
+        <select id="calc-mode">
+          <option value="grams">گرم</option>
+          <option value="portion">واحد خانگی</option>
+        </select>
+      </label>
+
+      <div id="grams-field">
+        <label>
+          مقدار (گرم)
+          <input id="grams" type="number" min="0.1" step="0.1" value="100" inputmode="decimal"/>
+        </label>
+      </div>
+
+      <div id="portion-field" hidden th:if="${food != null}">
+        <div class="row">
+          <label>
+            واحد
+            <select id="portionId">
+              <option th:each="p : ${food.portions}"
+                      th:value="${p.id}"
+                      th:text="${p.labelFa + ' (' + p.grams + 'g)'}">واحد</option>
+            </select>
+          </label>
+          <label>
+            تعداد
+            <input id="count" type="number" min="0.1" step="0.1" value="1" inputmode="decimal"/>
+          </label>
+        </div>
+      </div>
+      <p class="muted" th:if="${food == null}">برای واحد خانگی، ابتدا یک غذا را از جست‌وجو انتخاب کنید.</p>
+
+      <button type="submit">محاسبه</button>
+    </form>
+
+    <div id="calc-result" class="muted">نتیجه اینجا نمایش داده می‌شود.</div>
+  </section>
+
+  <footer class="footer">
+    <p class="disclaimer">
+      این ابزار تخمین تقریبی کالری است و جایگزین توصیهٔ متخصص تغذیه نیست.
+      مقادیر بر اساس میانگین دستور پخت است و روغن، شکر و اندازهٔ پرس می‌تواند نتیجه را تغییر دهد.
+    </p>
+    <p class="attribution">
+      داده‌های مواد اولیه: USDA FoodData Central (public domain) —
+      داده‌های محصولات بسته‌بندی: Open Food Facts (ODbL 1.0)
+    </p>
+  </footer>
+</div>
+<script th:src="@{/js/app.js}"></script>
+</body>
+</html>

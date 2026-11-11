@@ -1,0 +1,303 @@
+@font-face {
+  font-family: "Vazirmatn";
+  src: url("/fonts/Vazirmatn-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Vazirmatn";
+  src: url("/fonts/Vazirmatn-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --bg0: #f3efe6;
+  --bg1: #e7f0ea;
+  --ink: #1c2a22;
+  --muted: #5b6b62;
+  --accent: #0f6b4c;
+  --accent-soft: #d7ebe2;
+  --warn: #9a5b14;
+  --card-line: rgba(28, 42, 34, 0.12);
+  --shadow: 0 10px 30px rgba(28, 42, 34, 0.08);
+  --radius: 14px;
+  --font: "Vazirmatn", "Tahoma", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: var(--font);
+  color: var(--ink);
+  background:
+    radial-gradient(1200px 500px at 100% -10%, #d9efe4 0%, transparent 55%),
+    radial-gradient(900px 420px at 0% 0%, #f7e7c8 0%, transparent 50%),
+    linear-gradient(180deg, var(--bg0), var(--bg1));
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.shell {
+  width: min(980px, calc(100% - 1.5rem));
+  margin: 0 auto;
+  padding: 1rem 0 3rem;
+}
+
+.brand {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-bottom: 1rem;
+}
+
+.brand h1 {
+  margin: 0;
+  font-size: clamp(1.6rem, 4vw, 2.2rem);
+  letter-spacing: -0.02em;
+}
+
+.brand p {
+  margin: 0;
+  color: var(--muted);
+  max-width: 40rem;
+}
+
+.nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1rem 0 1.5rem;
+}
+
+.nav a {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.55rem 0.9rem;
+  border: 1px solid var(--card-line);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.55);
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.nav a.active,
+.nav a:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.panel {
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid var(--card-line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1rem;
+}
+
+.stack {
+  display: grid;
+  gap: 1rem;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: end;
+}
+
+label {
+  display: grid;
+  gap: 0.35rem;
+  font-size: 0.92rem;
+  color: var(--muted);
+}
+
+input,
+select,
+button {
+  font: inherit;
+}
+
+input,
+select {
+  min-height: 2.6rem;
+  padding: 0.45rem 0.7rem;
+  border: 1px solid var(--card-line);
+  border-radius: 10px;
+  background: #fff;
+  color: var(--ink);
+}
+
+button,
+.btn {
+  min-height: 2.6rem;
+  padding: 0.45rem 1rem;
+  border: 0;
+  border-radius: 10px;
+  background: var(--accent);
+  color: #fff;
+  cursor: pointer;
+}
+
+button.secondary {
+  background: #2f3f36;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.food-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.food-item {
+  display: grid;
+  gap: 0.75rem;
+  padding: 0.9rem 0;
+  border-bottom: 1px solid var(--card-line);
+}
+
+.food-item:last-child {
+  border-bottom: 0;
+}
+
+.food-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 0.82rem;
+}
+
+.badge.warn {
+  background: #f7e5c8;
+  color: var(--warn);
+}
+
+.kcal {
+  font-weight: 700;
+}
+
+.macros {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+.macro {
+  padding: 0.7rem;
+  border-radius: 12px;
+  background: #f7faf8;
+  border: 1px solid var(--card-line);
+  text-align: center;
+}
+
+.macro strong {
+  display: block;
+  font-size: 1.15rem;
+}
+
+.bar {
+  height: 0.55rem;
+  border-radius: 999px;
+  background: #dfe8e2;
+  overflow: hidden;
+  margin-top: 0.85rem;
+}
+
+.bar > span {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, #0f6b4c, #3aa57d);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th,
+.table td {
+  padding: 0.65rem 0.35rem;
+  border-bottom: 1px solid var(--card-line);
+  text-align: right;
+}
+
+.footer {
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--card-line);
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.8;
+}
+
+.footer .disclaimer {
+  margin-bottom: 0.75rem;
+  color: var(--ink);
+}
+
+.result {
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.empty {
+  padding: 1rem 0;
+  color: var(--muted);
+}
+
+@media (max-width: 640px) {
+  .macros {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .food-item form {
+    width: 100%;
+  }
+
+  .food-item form .row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

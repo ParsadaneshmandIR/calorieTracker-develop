@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title th:text="${pageTitle} + ' · پیگیر کالری'">جست‌وجو</title>
+  <link rel="stylesheet" th:href="@{/css/app.css}"/>
+</head>
+<body>
+<div class="shell">
+  <header class="brand">
+    <h1>پیگیر کالری</h1>
+    <p>تخمین کالری مواد غذایی و وعده‌ها با تمرکز روی خوراک ایرانی</p>
+  </header>
+
+  <nav class="nav">
+    <a class="active" th:href="@{/}">جست‌وجو</a>
+    <a th:href="@{/calculator}">ماشین‌حساب</a>
+    <a th:href="@{/meals}">وعده‌های من</a>
+  </nav>
+
+  <section class="panel stack">
+    <form method="get" th:action="@{/}" class="row">
+      <label>
+        جست‌وجو
+        <input type="search" name="q" th:value="${q}" placeholder="مثلاً قورمه یا برنج"/>
+      </label>
+      <label>
+        وضعیت
+        <select name="state">
+          <option value="">همه</option>
+          <option value="RAW" th:selected="${state != null and state.name() == 'RAW'}">خام</option>
+          <option value="COOKED" th:selected="${state != null and state.name() == 'COOKED'}">پخته</option>
+          <option value="PACKAGED" th:selected="${state != null and state.name() == 'PACKAGED'}">بسته‌بندی‌شده</option>
+        </select>
+      </label>
+      <button type="submit">بگرد</button>
+    </form>
+
+    <p class="muted" th:if="${foods.totalElements == 0}">موردی پیدا نشد.</p>
+
+    <ul class="food-list" th:if="${foods.totalElements > 0}">
+      <li class="food-item" th:each="food : ${foods.content}">
+        <div class="food-meta">
+          <strong th:text="${food.nameFa}">غذا</strong>
+          <span class="badge" th:text="${#pd.stateLabel(food.state.name())}">پخته</span>
+          <span class="kcal"
+                th:text="${#pd.n1(food.kcalPer100g)} + ' کیلوکالری / ۱۰۰ گرم'">۰</span>
+          <span class="badge warn"
+                th:if="${#pd.isPartialEdible(food.ediblePortionPct)}"
+                th:text="${#pd.pct(food.ediblePortionPct)} + ' خوراکی'">۸۷٪ خوراکی</span>
+        </div>
+        <div class="row">
+          <a class="btn" th:href="@{/calculator(foodId=${food.id})}">افزودن به ماشین‌حساب</a>
+        </div>
+      </li>
+    </ul>
+
+    <div class="row" th:if="${foods.totalPages > 1}">
+      <a th:if="${foods.page > 0}"
+         th:href="@{/(q=${q}, state=${state}, page=${foods.page - 1})}">قبلی</a>
+      <span class="muted"
+            th:text="'صفحه ' + ${#pd.i(foods.page + 1)} + ' از ' + ${#pd.i(foods.totalPages)}"></span>
+      <a th:if="${foods.page + 1 < foods.totalPages}"
+         th:href="@{/(q=${q}, state=${state}, page=${foods.page + 1})}">بعدی</a>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p class="disclaimer">
+      این ابزار تخمین تقریبی کالری است و جایگزین توصیهٔ متخصص تغذیه نیست.
+      مقادیر بر اساس میانگین دستور پخت است و روغن، شکر و اندازهٔ پرس می‌تواند نتیجه را تغییر دهد.
+    </p>
+    <p class="attribution">
+      داده‌های مواد اولیه: USDA FoodData Central (public domain) —
+      داده‌های محصولات بسته‌بندی: Open Food Facts (ODbL 1.0)
+    </p>
+  </footer>
+</div>
+<script th:src="@{/js/app.js}"></script>
+</body>
+</html>
